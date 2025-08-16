@@ -48,7 +48,7 @@ jobs:
           # Construir payload y mostrarlo para debug
           JSON_PAYLOAD=$(cat <<EOF
           {
-            "tags": ["GitHub Actions"],
+            "tags": ["GitHub_Actions"],
             "name": "CodeQL_#${{ github.run_id }}",
             "description": "${{ github.event.head_commit.message }}",
             "version": "${{ github.ref }}",
