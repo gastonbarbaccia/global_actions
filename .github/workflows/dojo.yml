@@ -2,6 +2,13 @@ name: "CodeQL Analysis"
 
 on:
   workflow_call:
+    inputs:
+      DEFECTDOJO_PRODUCTID:
+        required: true
+        type: string
+      DEFECTDOJO_PRODUCT_NAME:
+        required: true
+        type: string
 
 jobs:
   codeql_analysis:
