@@ -35,94 +35,94 @@ jobs:
 #          name: codeql-results
 #          path: codeql-results.sarif
 
-codeql_create_engagement:
-  name: Create engagement in DefectDojo - CodeQL
-  runs-on: ubuntu-latest
-  env:
-    DEFECTDOJO_URL: "http://35.173.243.96:8080"
-    DEFECTDOJO_TOKEN: "02dbd8bb2ab3071f94eacddd68d5d889b4edcda5"
-    DEFECTDOJO_ENGAGEMENT_PERIOD: 28
-    DEFECTDOJO_ENGAGEMENT_STATUS: "Not Started"
-    DEFECTDOJO_ENGAGEMENT_BUILD_SERVER: null
-    DEFECTDOJO_ENGAGEMENT_SOURCE_CODE_MANAGEMENT_SERVER: null
-    DEFECTDOJO_ENGAGEMENT_ORCHESTRATION_ENGINE: null
-    DEFECTDOJO_ENGAGEMENT_DEDUPLICATION_ON_ENGAGEMENT: false
-    DEFECTDOJO_ENGAGEMENT_THREAT_MODEL: true
-    DEFECTDOJO_ENGAGEMENT_API_TEST: true
-    DEFECTDOJO_ENGAGEMENT_PEN_TEST: true
-    DEFECTDOJO_ENGAGEMENT_CHECK_LIST: true
-    DEFECTDOJO_PRODUCTID: ${{ inputs.DEFECTDOJO_PRODUCTID }}
+  codeql_create_engagement:
+    name: Create engagement in DefectDojo - CodeQL
+    runs-on: ubuntu-latest
+    env:
+      DEFECTDOJO_URL: "http://35.173.243.96:8080"
+      DEFECTDOJO_TOKEN: "02dbd8bb2ab3071f94eacddd68d5d889b4edcda5"
+      DEFECTDOJO_ENGAGEMENT_PERIOD: 28
+      DEFECTDOJO_ENGAGEMENT_STATUS: "Not Started"
+      DEFECTDOJO_ENGAGEMENT_BUILD_SERVER: null
+      DEFECTDOJO_ENGAGEMENT_SOURCE_CODE_MANAGEMENT_SERVER: null
+      DEFECTDOJO_ENGAGEMENT_ORCHESTRATION_ENGINE: null
+      DEFECTDOJO_ENGAGEMENT_DEDUPLICATION_ON_ENGAGEMENT: false
+      DEFECTDOJO_ENGAGEMENT_THREAT_MODEL: true
+      DEFECTDOJO_ENGAGEMENT_API_TEST: true
+      DEFECTDOJO_ENGAGEMENT_PEN_TEST: true
+      DEFECTDOJO_ENGAGEMENT_CHECK_LIST: true
+      DEFECTDOJO_PRODUCTID: ${{ inputs.DEFECTDOJO_PRODUCTID }}
 
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y curl jq coreutils
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl jq coreutils
 
-    - name: Set engagement dates
-      run: |
-        echo "TODAY=$(date +%Y-%m-%d)" >> $GITHUB_ENV
-        echo "ENDDAY=$(date -d '+28 days' +%Y-%m-%d)" >> $GITHUB_ENV
+      - name: Set engagement dates
+        run: |
+          echo "TODAY=$(date +%Y-%m-%d)" >> $GITHUB_ENV
+          echo "ENDDAY=$(date -d '+28 days' +%Y-%m-%d)" >> $GITHUB_ENV
 
-    - name: Create engagement in DefectDojo
-      run: |
-        # Construir payload y mostrarlo para debug
-        JSON_PAYLOAD=$(cat <<EOF
-        {
-          "tags": ["GitHub Actions"],
-          "name": "CodeQL_#${{ github.run_id }}",
-          "description": "${{ github.event.head_commit.message }}",
-          "version": "${{ github.ref }}",
-          "first_contacted": "$TODAY",
-          "target_start": "$TODAY",
-          "target_end": "$ENDDAY",
-          "reason": "Automated engagement",
-          "tracker": "https://github.com/${{ github.repository }}",
-          "test_strategy": null,
-          "threat_model": ${DEFECTDOJO_ENGAGEMENT_THREAT_MODEL},
-          "api_test": ${DEFECTDOJO_ENGAGEMENT_API_TEST},
-          "pen_test": ${DEFECTDOJO_ENGAGEMENT_PEN_TEST},
-          "check_list": ${DEFECTDOJO_ENGAGEMENT_CHECK_LIST},
-          "status": "${DEFECTDOJO_ENGAGEMENT_STATUS}",
-          "engagement_type": "CI/CD",
-          "build_id": "${{ github.run_id }}",
-          "commit_hash": "${{ github.sha }}",
-          "branch_tag": "${{ github.ref_name }}",
-          "source_code_management_uri": "https://github.com/${{ github.repository }}",
-          "deduplication_on_engagement": ${DEFECTDOJO_ENGAGEMENT_DEDUPLICATION_ON_ENGAGEMENT},
-          "product": ${DEFECTDOJO_PRODUCTID},
-          "build_server": ${DEFECTDOJO_ENGAGEMENT_BUILD_SERVER},
-          "source_code_management_server": ${DEFECTDOJO_ENGAGEMENT_SOURCE_CODE_MANAGEMENT_SERVER},
-          "orchestration_engine": ${DEFECTDOJO_ENGAGEMENT_ORCHESTRATION_ENGINE}
-        }
-        EOF
-        )
+      - name: Create engagement in DefectDojo
+        run: |
+          # Construir payload y mostrarlo para debug
+          JSON_PAYLOAD=$(cat <<EOF
+          {
+            "tags": ["GitHub Actions"],
+            "name": "CodeQL_#${{ github.run_id }}",
+            "description": "${{ github.event.head_commit.message }}",
+            "version": "${{ github.ref }}",
+            "first_contacted": "$TODAY",
+            "target_start": "$TODAY",
+            "target_end": "$ENDDAY",
+            "reason": "Automated engagement",
+            "tracker": "https://github.com/${{ github.repository }}",
+            "test_strategy": null,
+            "threat_model": ${DEFECTDOJO_ENGAGEMENT_THREAT_MODEL},
+            "api_test": ${DEFECTDOJO_ENGAGEMENT_API_TEST},
+            "pen_test": ${DEFECTDOJO_ENGAGEMENT_PEN_TEST},
+            "check_list": ${DEFECTDOJO_ENGAGEMENT_CHECK_LIST},
+            "status": "${DEFECTDOJO_ENGAGEMENT_STATUS}",
+            "engagement_type": "CI/CD",
+            "build_id": "${{ github.run_id }}",
+            "commit_hash": "${{ github.sha }}",
+            "branch_tag": "${{ github.ref_name }}",
+            "source_code_management_uri": "https://github.com/${{ github.repository }}",
+            "deduplication_on_engagement": ${DEFECTDOJO_ENGAGEMENT_DEDUPLICATION_ON_ENGAGEMENT},
+            "product": ${DEFECTDOJO_PRODUCTID},
+            "build_server": ${DEFECTDOJO_ENGAGEMENT_BUILD_SERVER},
+            "source_code_management_server": ${DEFECTDOJO_ENGAGEMENT_SOURCE_CODE_MANAGEMENT_SERVER},
+            "orchestration_engine": ${DEFECTDOJO_ENGAGEMENT_ORCHESTRATION_ENGINE}
+          }
+          EOF
+          )
 
-        echo "===== JSON PAYLOAD SENT ====="
-        echo "$JSON_PAYLOAD" | jq .
+          echo "===== JSON PAYLOAD SENT ====="
+          echo "$JSON_PAYLOAD" | jq .
 
-        # Ejecutar curl y guardar respuesta
-        curl --silent --show-error --location --request POST "${DEFECTDOJO_URL}/api/v2/engagements/" \
-        --header "Authorization: Token ${DEFECTDOJO_TOKEN}" \
-        --header "Content-Type: application/json" \
-        --data "$JSON_PAYLOAD" -o id.json
+          # Ejecutar curl y guardar respuesta
+          curl --silent --show-error --location --request POST "${DEFECTDOJO_URL}/api/v2/engagements/" \
+          --header "Authorization: Token ${DEFECTDOJO_TOKEN}" \
+          --header "Content-Type: application/json" \
+          --data "$JSON_PAYLOAD" -o id.json
 
-        echo "===== RESPONSE FROM DEFECTDOJO ====="
-        cat id.json | jq .
+          echo "===== RESPONSE FROM DEFECTDOJO ====="
+          cat id.json | jq .
 
-        # Extraer el ID y guardarlo
-        ENGAGEMENT_ID=$(jq -r '.id' id.json)
-        echo "DEFECTDOJO_ENGAGEMENTID=${ENGAGEMENT_ID}" >> defectdojo1.env
-        echo "DEFECTDOJO_ENGAGEMENTID=${ENGAGEMENT_ID}"
+          # Extraer el ID y guardarlo
+          ENGAGEMENT_ID=$(jq -r '.id' id.json)
+          echo "DEFECTDOJO_ENGAGEMENTID=${ENGAGEMENT_ID}" >> defectdojo1.env
+          echo "DEFECTDOJO_ENGAGEMENTID=${ENGAGEMENT_ID}"
 
-    - name: Upload defectdojo.env file
-      uses: actions/upload-artifact@v4
-      with:
-        name: defectdojo1-env
-        path: defectdojo1.env
+      - name: Upload defectdojo.env file
+        uses: actions/upload-artifact@v4
+        with:
+          name: defectdojo1-env
+          path: defectdojo1.env
   
 #  codeql_import_results:
 #    name: Publish CodeQL Scan in DefectDojo
