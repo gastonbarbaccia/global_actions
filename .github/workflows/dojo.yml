@@ -40,8 +40,8 @@ jobs:
     needs: codeql_analysis
     runs-on: ubuntu-latest
     env:
-      DEFECTDOJO_URL: "http://54.235.228.96:8080"
-      DEFECTDOJO_TOKEN: "127dd1463754995c1c4e62cf98a7a2b921a3763f"
+      DEFECTDOJO_URL: "http://35.173.243.96:8080"
+      DEFECTDOJO_TOKEN: "02dbd8bb2ab3071f94eacddd68d5d889b4edcda5"
       DEFECTDOJO_ENGAGEMENT_PERIOD: 28
       DEFECTDOJO_ENGAGEMENT_STATUS: "Not Started"
       DEFECTDOJO_ENGAGEMENT_BUILD_SERVER: "null"
@@ -71,7 +71,7 @@ jobs:
       - name: Create engagement in DefectDojo
         run: |
           ENGAGEMENTID=$(curl --fail --location --request POST "${DEFECTDOJO_URL}/api/v2/engagements/" \
-          --header "Authorization: Token 127dd1463754995c1c4e62cf98a7a2b921a3763f" \
+          --header "Authorization: Token 02dbd8bb2ab3071f94eacddd68d5d889b4edcda5" \
           --header "Content-Type: application/json" \
           --data-raw '{
             "tags": ["GitHub Actions"],
@@ -114,8 +114,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: codeql_create_engagement
     env:
-      DEFECTDOJO_URL: "http://54.235.228.96:8080"
-      DEFECTDOJO_TOKEN: "127dd1463754995c1c4e62cf98a7a2b921a3763f"
+      DEFECTDOJO_URL: "http://35.173.243.96:8080"
+      DEFECTDOJO_TOKEN: "02dbd8bb2ab3071f94eacddd68d5d889b4edcda5"
       DEFECTDOJO_SCAN_MINIMUM_SEVERITY: "Info"
       DEFECTDOJO_SCAN_ACTIVE: "true"
       DEFECTDOJO_SCAN_VERIFIED: "false"
@@ -197,8 +197,8 @@ jobs:
     needs: trivy_scan
     runs-on: ubuntu-latest
     env:
-      DEFECTDOJO_URL: "http://54.235.228.96:8080"
-      DEFECTDOJO_TOKEN: "127dd1463754995c1c4e62cf98a7a2b921a3763f"
+      DEFECTDOJO_URL: "http://35.173.243.96:8080"
+      DEFECTDOJO_TOKEN: "02dbd8bb2ab3071f94eacddd68d5d889b4edcda5"
       DEFECTDOJO_ENGAGEMENT_PERIOD: 28
       DEFECTDOJO_ENGAGEMENT_STATUS: "Not Started"
       DEFECTDOJO_ENGAGEMENT_BUILD_SERVER: "null"
@@ -228,7 +228,7 @@ jobs:
       - name: Create engagement in DefectDojo
         run: |
           ENGAGEMENTID=$(curl --fail --location --request POST "${DEFECTDOJO_URL}/api/v2/engagements/" \
-          --header "Authorization: Token 127dd1463754995c1c4e62cf98a7a2b921a3763f" \
+          --header "Authorization: Token 02dbd8bb2ab3071f94eacddd68d5d889b4edcda5" \
           --header "Content-Type: application/json" \
           --data-raw '{
             "tags": ["GitHub Actions"],
@@ -270,8 +270,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: trivy_create_engagement
     env:
-      DEFECTDOJO_URL: "http://54.235.228.96:8080"
-      DEFECTDOJO_TOKEN: "127dd1463754995c1c4e62cf98a7a2b921a3763f"
+      DEFECTDOJO_URL: "http://35.173.243.96:8080"
+      DEFECTDOJO_TOKEN: "02dbd8bb2ab3071f94eacddd68d5d889b4edcda5"
       DEFECTDOJO_SCAN_MINIMUM_SEVERITY: "Info"
       DEFECTDOJO_SCAN_ACTIVE: "true"
       DEFECTDOJO_SCAN_VERIFIED: "false"
